@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПГАС БГИТУ | Повышенная государственная академическая стипендия</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Фоновые элементы -->
+    <div class="background-elements">
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+        <div class="particle particle-5"></div>
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- Главный контейнер -->
+    <div class="main-container">
+        <!-- Анимированный хедер -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>ПРОФКОМ</h1>
+                        <h2>СТУДЕНТОВ БГИТУ</h2>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="dashboard.html" class="dashboard-btn">
+                <i class="fas fa-user-circle"></i>
+                <span>Личный кабинет</span>
+            </a>
+        </div>
+                <div class="header-decoration">
+                    <div class="decoration-line"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-line"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Герой-секция -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="title-wrapper">
+                    <h3 class="subtitle">ПОВЫШЕННАЯ</h3>
+                    <h1 class="main-title">
+                        <span class="title-word title-word-1">ГОСУДАРСТВЕННАЯ</span>
+                        <span class="title-word title-word-2">АКАДЕМИЧЕСКАЯ</span>
+                    </h1>
+                    <h2 class="highlight-title">
+                        <span class="highlight-text">СТИПЕНДИЯ</span>
+                        <span class="highlight-glow"></span>
+                    </h2>
+                </div>
+
+                <div class="hero-description">
+                    <p>Приём заявлений за достижения в различных видах деятельности</p>
+                    <div class="scroll-indicator">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Сетка категорий стипендий -->
+        <section class="categories-section">
+            <div class="section-header">
+                <h2 class="section-title">Категории достижений</h2>
+                <p class="section-subtitle">Выберите категорию для просмотра подробной информации</p>
+            </div>
+
+            <div class="categories-grid">
+    <!-- Учебная деятельность -->
+    <div class="category-card" data-category="academic">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="card-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="card-number">01</div>
+                <h3 class="card-title">Учебная деятельность</h3>
+                <p class="card-description">Отличная успеваемость и академические достижения</p>
+                <div class="card-hint">
+                    <span>Нажмите для подробностей</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-glow"></div>
+        <!-- Hover контент -->
+        <div class="card-hover-content">
+            <h4>Основные критерии:</h4>
+            <ul class="card-hover-list">
+                <li>Отличная успеваемость</li>
+                <li>Награды за проекты</li>
+                <li>Победы в олимпиадах</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Научно-исследовательская деятельность -->
+    <div class="category-card" data-category="research">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="card-icon">
+                    <i class="fas fa-flask"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="card-number">02</div>
+                <h3 class="card-title">Научно-исследовательская</h3>
+                <p class="card-description">Научные публикации, патенты и гранты</p>
+                <div class="card-hint">
+                    <span>Нажмите для подробностей</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-glow"></div>
+        <!-- Hover контент -->
+        <div class="card-hover-content">
+            <h4>Основные критерии:</h4>
+            <ul class="card-hover-list">
+                <li>Научные публикации</li>
+                <li>Патенты и свидетельства</li>
+                <li>Получение грантов</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Общественная деятельность -->
+    <div class="category-card" data-category="social">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="card-number">03</div>
+                <h3 class="card-title">Общественная деятельность</h3>
+                <p class="card-description">Участие в общественной жизни университета</p>
+                <div class="card-hint">
+                    <span>Нажмите для подробностей</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-glow"></div>
+        <!-- Hover контент -->
+        <div class="card-hover-content">
+            <h4>Основные критерии:</h4>
+            <ul class="card-hover-list">
+                <li>Организация мероприятий</li>
+                <li>Волонтерская деятельность</li>
+                <li>Лидерские позиции</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Культурно-творческая деятельность -->
+    <div class="category-card" data-category="cultural">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="card-icon">
+                    <i class="fas fa-paint-brush"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="card-number">04</div>
+                <h3 class="card-title">Культурно-творческая</h3>
+                <p class="card-description">Творческие достижения и культурные мероприятия</p>
+                <div class="card-hint">
+                    <span>Нажмите для подробностей</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-glow"></div>
+        <!-- Hover контент -->
+        <div class="card-hover-content">
+            <h4>Основные критерии:</h4>
+            <ul class="card-hover-list">
+                <li>Участие в конкурсах</li>
+                <li>Творческие проекты</li>
+                <li>Культурные мероприятия</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Спортивная деятельность -->
+    <div class="category-card" data-category="sport">
+        <div class="card-inner">
+            <div class="card-front">
+                <div class="card-icon">
+                    <i class="fas fa-trophy"></i>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="card-number">05</div>
+                <h3 class="card-title">Спортивная деятельность</h3>
+                <p class="card-description">Спортивные достижения и соревнования</p>
+                <div class="card-hint">
+                    <span>Нажмите для подробностей</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-glow"></div>
+        <!-- Hover контент -->
+        <div class="card-hover-content">
+            <h4>Основные критерии:</h4>
+            <ul class="card-hover-list">
+                <li>Спортивные награды</li>
+                <li>Участие в соревнованиях</li>
+                <li>Спортивные звания</li>
+            </ul>
+        </div>
+    </div>
+</div>
+        <!-- Информационная панель -->
+        <section class="info-panel">
+            <div class="panel-content">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Сроки подачи</h4>
+                        <p>Заявления принимаются два раза в год</p>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Документы</h4>
+                        <p>Полный пакет подтверждающих документов</p>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Размер стипендии</h4>
+                        <p>Повышенная ставка на весь семестр</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="footer-text">
+                        <h3>БИНТУ</h3>
+                        <p>Профком студентов</p>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <p class="footer-note">ПГАС для обучающихся по программам высшего образования</p>
+                    <p class="copyright">© 2025 БГИТУ. Все права защищены.</p>
+                </div>
+                <div class="footer-action">
+                    <button class="contact-btn">
+                        <i class="fas fa-envelope"></i>
+                        <span>Контакты</span>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для детальной информации -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Учебная деятельность</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Контент будет загружаться динамически -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action-btn">
+                    <i class="fas fa-download"></i>
+                    Скачать требования
+                </button>
+                <button class="modal-action-btn secondary">
+                    <i class="fas fa-question-circle"></i>
+                    Задать вопрос
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пузырьковая анимация -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

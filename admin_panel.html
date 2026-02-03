@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | ПГАС БГИТУ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #38b000;
+            --warning: #ff9e00;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --sidebar-width: 280px;
+        }
+        
+        body {
+            background: #f5f7fb;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        /* Сайдбар */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #4cc9f0;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .nav-menu {
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: white;
+            border-left-color: var(--primary);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .user-info {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .stat-icon.users { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+        .stat-icon.applications { background: linear-gradient(135deg, var(--accent), #b5179e); }
+        .stat-icon.pending { background: linear-gradient(135deg, var(--warning), #e68a00); }
+        .stat-icon.approved { background: linear-gradient(135deg, var(--success), #2d9100); }
+        
+        .stat-info h3 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .stat-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Таблица */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .table-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .refresh-btn {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f8f9fa;
+        }
+        
+        th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #eee;
+        }
+        
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-draft { background: #fff3cd; color: #856404; }
+        .status-submitted { background: #cce5ff; color: #004085; }
+        .status-in_review { background: #d1ecf1; color: #0c5460; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn.view {
+            background: #e7f1ff;
+            color: var(--primary);
+        }
+        
+        .action-btn.approve {
+            background: #d4edda;
+            color: var(--success);
+        }
+        
+        .action-btn.reject {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Модальное окно */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.3s ease;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .info-card h4 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-card p {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .description-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .description-box h4 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .points-input {
+            width: 100px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .points-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar .logo h1,
+            .sidebar .logo p,
+            .sidebar .nav-item span,
+            .sidebar .user-info .user-name {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .user-info {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .filters {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Сайдбар -->
+    <div class="sidebar">
+        <div class="logo">
+            <h1>ПГАС БГИТУ</h1>
+            <p>Админ-панель</p>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Дашборд</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('applications')">
+                <i class="fas fa-file-alt"></i>
+                <span>Все заявки</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('students')">
+                <i class="fas fa-users"></i>
+                <span>Студенты</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('statistics')">
+                <i class="fas fa-chart-bar"></i>
+                <span>Статистика</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Настройки</span>
+            </a>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="user-name">
+                <strong>Администратор</strong>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">admin@bintu.ru</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="main-content">
+        <!-- Дашборд -->
+        <div id="dashboardSection" class="content-section">
+            <div class="header">
+                <h2><i class="fas fa-tachometer-alt"></i> Панель управления</h2>
+                <div style="color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-calendar-alt"></i> 
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon users">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Всего студентов</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon applications">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalApplications">0</h3>
+                        <p>Всего заявок</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingApplications">0</h3>
+                        <p>На рассмотрении</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon approved">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="approvedApplications">0</h3>
+                        <p>Одобрено</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-history"></i> Последние заявки</h3>
+                    <div class="filters">
+                        <select class="filter-select" onchange="loadRecentApplications(this.value)">
+                            <option value="all">Все статусы</option>
+                            <option value="submitted">На рассмотрении</option>
+                            <option value="approved">Одобренные</option>
+                        </select>
+                        <button class="refresh-btn" onclick="loadDashboard()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Студент</th>
+                            <th>Факультет</th>
+                            <th>Категория</th>
+                            <th>Статус</th>
+                            <th>Баллы</th>
+                            <th>Дата</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentApplications">
+                        <!-- Заявки загружаются динамически -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Все заявки -->
+        <div id="applicationsSection" class="content-section" style="display: none;">
+            <div class="header">
+                <h2><i class="fas fa-file-alt"></i> Управление заявками</h2>
+                <button class="refresh-btn" onclick="loadAllApplications()">
+                    <i class="fas fa-sync-alt"></i> Обновить
+                </button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Все заявки на стипендию</h3>
+                    <div class="filters">
+                        <select class="filter-select" id="filterStatus" onchange="filterApplications()">
+                            <option value="">Все статусы</option>
+                            <option value="draft">Черновики</option>
+                            <option value="submitted">На рассмотрении</option>
+                            <option value="in_review">В работе</option>
+                            <option value="approved">Одобрено</option>
+                            <option value="rejected">Отклонено</option>
+                        </select>
+                        
+                        <select class="filter-select" id="filterCategory" onchange="filterApplications()">
+                            <option value="">Все категории</option>
+                            <option value="academic">Учебная</option>
+                            <option value="research">Научная</option>
+                            <option value="social">Общественная</option>
+                            <option value="cultural">Культурная</option>
+                            <option value="sport">Спортивная</option>
+                        </select>
+                        
+                        <select class="filter-select" id="filterFaculty" onchange="filterApplications()">
+                            <option value="">Все факультеты</option>
+                            <!-- Факультеты загружаются динамически -->
+                        </select>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Студент</th>
+                            <th>Факультет</th>
+                            <th>Категория</th>
+                            <th>Статус</th>
+                            <th>Баллы</th>
+                            <th>Дата подачи</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allApplications">
+                        <!-- Заявки загружаются динамически -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Модальное окно просмотра заявки -->
+        <div class="modal-overlay" id="viewApplicationModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3><i class="fas fa-file-alt"></i> Просмотр заявки #<span id="modalAppId"></span></h3>
+                    <button class="close-modal" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h4>Студент</h4>
+                            <p id="modalStudentName"></p>
+                            <small style="color: #666;" id="modalStudentInfo"></small>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>Категория</h4>
+                            <p id="modalCategory"></p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>Статус</h4>
+                            <p><span class="status-badge" id="modalStatus"></span></p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h4>Баллы</h4>
+                            <p id="modalPoints">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="description-box">
+                        <h4>Описание достижений</h4>
+                        <p id="modalDescription"></p>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <label><strong>Назначить баллы:</strong></label>
+                            <input type="number" class="points-input" id="assignPoints" min="0" max="200" value="0">
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-left: auto;">
+                            <button class="btn btn-success" onclick="updateStatus('approved')">
+                                <i class="fas fa-check"></i> Одобрить
+                            </button>
+                            <button class="btn btn-danger" onclick="updateStatus('rejected')">
+                                <i class="fas fa-times"></i> Отклонить
+                            </button>
+                            <button class="btn btn-primary" onclick="updateStatus('in_review')">
+                                <i class="fas fa-eye"></i> В работу
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = '/api';
+        let currentApplicationId = null;
+        
+        // Показать текущую дату
+        document.getElementById('currentDate').textContent = 
+            new Date().toLocaleDateString('ru-RU', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        
+        // Загрузка дашборда
+               // Загрузка дашборда
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/stats`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    document.getElementById('totalUsers').textContent = data.users_count;
+                    document.getElementById('totalApplications').textContent = data.applications_count;
+                    document.getElementById('pendingApplications').textContent = data.pending_count;
+                    document.getElementById('approvedApplications').textContent = data.approved_count;
+                }
+                
+                // Загружаем последние заявки
+                loadRecentApplications('all');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки дашборда:', error);
+                alert('Ошибка загрузки данных');
+            }
+        }
+        
+        // Загрузка последних заявок
+        async function loadRecentApplications(status) {
+            try {
+                let url = `${API_URL}/applications?limit=10`;
+                if (status !== 'all') {
+                    url += `&status=${status}`;
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                const tbody = document.getElementById('recentApplications');
+                
+                if (data.status === 'success' && data.applications.length > 0) {
+                    tbody.innerHTML = data.applications.map(app => `
+                        <tr>
+                            <td>${app.student_name}</td>
+                            <td>${app.faculty}</td>
+                            <td>${getCategoryName(app.category)}</td>
+                            <td><span class="status-badge status-${app.status}">${getStatusText(app.status)}</span></td>
+                            <td>${app.points || 0}</td>
+                            <td>${new Date(app.created_at).toLocaleDateString('ru-RU')}</td>
+                            <td>
+                                <button class="action-btn view" onclick="viewApplication(${app.id})">
+                                    <i class="fas fa-eye"></i> Просмотр
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: #666;">
+                                Нет заявок для отображения
+                            </td>
+                        </tr>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки заявок:', error);
+                document.getElementById('recentApplications').innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #f72585;">
+                            Ошибка загрузки заявок
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Загрузка всех заявок с фильтрами
+        async function loadAllApplications() {
+            try {
+                const status = document.getElementById('filterStatus').value;
+                const category = document.getElementById('filterCategory').value;
+                const faculty = document.getElementById('filterFaculty').value;
+                
+                let url = `${API_URL}/applications`;
+                const params = [];
+                
+                if (status) params.push(`status=${status}`);
+                if (category) params.push(`category=${category}`);
+                if (faculty) params.push(`faculty=${faculty}`);
+                
+                if (params.length > 0) {
+                    url += '?' + params.join('&');
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                const tbody = document.getElementById('allApplications');
+                
+                if (data.status === 'success' && data.applications.length > 0) {
+                    tbody.innerHTML = data.applications.map(app => `
+                        <tr>
+                            <td>${app.id}</td>
+                            <td>${app.student_name}</td>
+                            <td>${app.faculty}</td>
+                            <td>${getCategoryName(app.category)}</td>
+                            <td><span class="status-badge status-${app.status}">${getStatusText(app.status)}</span></td>
+                            <td>${app.points || 0}</td>
+                            <td>${new Date(app.created_at).toLocaleDateString('ru-RU')}</td>
+                            <td>
+                                <button class="action-btn view" onclick="viewApplication(${app.id})" title="Просмотр">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn approve" onclick="approveApplication(${app.id})" title="Одобрить" ${app.status === 'approved' ? 'disabled' : ''}>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="action-btn reject" onclick="rejectApplication(${app.id})" title="Отклонить" ${app.status === 'rejected' ? 'disabled' : ''}>
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                                Нет заявок для отображения
+                            </td>
+                        </tr>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки заявок:', error);
+                document.getElementById('allApplications').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #f72585;">
+                            Ошибка загрузки заявок
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Фильтрация заявок
+        function filterApplications() {
+            loadAllApplications();
+        }
+        
+        // Просмотр деталей заявки
+        async function viewApplication(applicationId) {
+            try {
+                const response = await fetch(`${API_URL}/applications/${applicationId}`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    currentApplicationId = applicationId;
+                    const app = data.application;
+                    
+                    document.getElementById('modalAppId').textContent = app.id;
+                    document.getElementById('modalStudentName').textContent = app.student_name;
+                    document.getElementById('modalStudentInfo').textContent = 
+                        `${app.faculty}, ${app.student_id}`;
+                    document.getElementById('modalCategory').textContent = getCategoryName(app.category);
+                    document.getElementById('modalStatus').textContent = getStatusText(app.status);
+                    document.getElementById('modalStatus').className = `status-badge status-${app.status}`;
+                    document.getElementById('modalPoints').textContent = app.points || 0;
+                    document.getElementById('modalDescription').textContent = app.description;
+                    document.getElementById('assignPoints').value = app.points || 0;
+                    
+                    document.getElementById('viewApplicationModal').style.display = 'flex';
+                } else {
+                    alert('Ошибка загрузки заявки: ' + data.error);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка просмотра заявки:', error);
+                alert('Ошибка загрузки заявки');
+            }
+        }
+        
+        // Одобрить заявку
+        async function approveApplication(applicationId) {
+            if (confirm('Вы уверены, что хотите одобрить эту заявку?')) {
+                await updateApplicationStatus(applicationId, 'approved');
+            }
+        }
+        
+        // Отклонить заявку
+        async function rejectApplication(applicationId) {
+            if (confirm('Вы уверены, что хотите отклонить эту заявку?')) {
+                await updateApplicationStatus(applicationId, 'rejected');
+            }
+        }
+        
+        // Обновить статус заявки
+        async function updateApplicationStatus(applicationId, status) {
+            try {
+                const response = await fetch(`${API_URL}/applications/${applicationId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: status,
+                        points: document.getElementById('assignPoints').value || 0
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert(`Заявка ${status === 'approved' ? 'одобрена' : 'отклонена'}!`);
+                    loadDashboard();
+                    loadAllApplications();
+                    closeModal();
+                } else {
+                    alert('Ошибка: ' + data.error);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка обновления статуса:', error);
+                alert('Ошибка обновления статуса');
+            }
+        }
+        
+        // Обновить статус из модального окна
+        async function updateStatus(status) {
+            if (!currentApplicationId) return;
+            
+            const points = document.getElementById('assignPoints').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/applications/${currentApplicationId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: status,
+                        points: parseInt(points)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert(`Статус заявки обновлён на "${getStatusText(status)}"`);
+                    loadDashboard();
+                    loadAllApplications();
+                    closeModal();
+                } else {
+                    alert('Ошибка: ' + data.error);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка обновления статуса:', error);
+                alert('Ошибка обновления статуса');
+            }
+        }
+        
+        // Закрыть модальное окно
+        function closeModal() {
+            document.getElementById('viewApplicationModal').style.display = 'none';
+            currentApplicationId = null;
+        }
+        
+        // Получить название категории
+        function getCategoryName(categoryId) {
+            const categories = {
+                'academic': 'Учебная деятельность',
+                'research': 'Научно-исследовательская',
+                'social': 'Общественная деятельность',
+                'cultural': 'Культурно-творческая',
+                'sport': 'Спортивная деятельность'
+            };
+            return categories[categoryId] || categoryId;
+        }
+        
+        // Получить текст статуса
+        function getStatusText(status) {
+            const statuses = {
+                'draft': 'Черновик',
+                'submitted': 'На рассмотрении',
+                'in_review': 'В работе',
+                'approved': 'Одобрено',
+                'rejected': 'Отклонено'
+            };
+            return statuses[status] || status;
+        }
+        
+        // Показать секцию
+        function showSection(sectionId) {
+            // Скрываем все секции
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Показываем выбранную секцию
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            // Обновляем активный элемент в навигации
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.nav-item[onclick*="${sectionId}"]`).classList.add('active');
+            
+            // Загружаем данные для секции
+            if (sectionId === 'dashboard') {
+                loadDashboard();
+            } else if (sectionId === 'applications') {
+                loadAllApplications();
+            }
+        }
+        
+        // Загрузить список факультетов
+        async function loadFaculties() {
+            try {
+                const response = await fetch(`${API_URL}/users`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const faculties = [...new Set(data.users.map(user => user.faculty))];
+                    const select = document.getElementById('filterFaculty');
+                    
+                    // Очищаем существующие опции (кроме первой)
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Добавляем факультеты
+                    faculties.forEach(faculty => {
+                        if (faculty) {
+                            const option = document.createElement('option');
+                            option.value = faculty;
+                            option.textContent = faculty;
+                            select.appendChild(option);
+                        }
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки факультетов:', error);
+            }
+        }
+        
+        // Инициализация при загрузке страницы
+        window.onload = function() {
+            loadDashboard();
+            loadFaculties();
+            showSection('dashboard');
+        };
+        
+        // Закрытие модального окна по клику вне его
+        document.getElementById('viewApplicationModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Закрытие модального окна по ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
